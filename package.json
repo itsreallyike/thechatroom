@@ -1,0 +1,32 @@
+{
+  "name": "ikechatroom",
+  "version": "1.0.0",
+  "description": "This is my first chatroom. It will be powered by Node.js, Express, Jade, and MongoDB. ",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "engines": {
+    "node": "4.1.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "none"
+  },
+  "dependencies": {
+    "body-parser": "^1.15.1",
+    "errorhandler": "^1.4.3",
+    "express": "^4.13.4",
+    "method-override": "^2.3.6",
+    "mongodb": "^2.1.19",
+    "morgan": "^1.7.0",
+    "serve-static": "^1.10.2",
+    "socket.io": "^1.4.6",
+    "stylus": "^0.54.5"
+  },
+  "keywords": [
+    "none"
+  ],
+  "author": "itsreallyike",
+  "license": "UNLICENSED"
+}
