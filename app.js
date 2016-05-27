@@ -1,5 +1,5 @@
-var express = require("express");
-var server = require ("http").createServer(app)
+var app = require("express")();
+var server = require("http").createServer(app);
 var io = require("socket.io")(server);
 var mongo = require("mongodb").MongoClient;
 var bodyParser = require("body-parser");
@@ -7,9 +7,8 @@ var methodOverride = require('method-override');
 var logger = require('morgan');
 var serveStatic = require('serve-static');
 var errorhandler = require('errorhandler');
+var jade = require('jade')
 var path = require('path');
-
-var app = express();
 
 app.set('port', process.env.PORT || 8080);
 app.set('views', path.join(__dirname, 'views'));
@@ -26,7 +25,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 app.get("/", function(req, res) {
-    res.send("index")
+    res.render("index")
 });
 
 io.on("connection", function(socket) {
@@ -54,7 +53,6 @@ io.on("connection", function(socket) {
             if (err) {
                 console.log("error");
             }
-        //don't do spaces in collection names - make it async with callback
             db.collection("chatmessages", function(err, col) {
                 if (err) {
                     console.log(err)
@@ -73,9 +71,6 @@ io.on("connection", function(socket) {
     });
 });
 
-server.listen(app.get("port"), function (err, data) {
-	if (err) {
-		console.log(err)
-	};
+server.listen(app.get("port"), function () {
 	console.log("listening on " + app.get("port"));
 });
