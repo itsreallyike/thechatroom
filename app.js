@@ -36,14 +36,13 @@ io.on("connection", function(socket) {
         if(err) {
         console.log("error connecting to mongo db")
         }
-        db.collection("chat messages", function(err, col) {
-            var stream = col.find().sort({ _id : -1 }).limit(10).stream();
+        var collection = db.collection("chat messages");
+            var stream = collection.find().sort({_id : -1}).limit(10).stream();
             stream.on("data", function(chat) {
                 console.log("emitting chat");
-                socket.emit("chat", chat);
+                socket.emit("chat", chat.content);
             }); 
         });
-    });
     
     socket.on("disconnect", function() {
         console.log("user disconnected");
@@ -54,12 +53,8 @@ io.on("connection", function(socket) {
             if (err) {
                 console.log("error");
             }
-            db.collection("chatmessages", function(err, col) {
-                if (err) {
-                    console.log(err)
-                    return;
-                }
-                col.insert({content: msg}, function(err, doc) {
+            var collection = db.collection("chatmessages");
+                collection.insert({content: msg}, function(err, doc) {
                     if (err) {
                         console.log("error insterting msg to database")
                         return;
@@ -67,7 +62,6 @@ io.on("connection", function(socket) {
                     console.log("inserted " + msg + "to db - content")
                 });
             });
-        });
         socket.broadcast.emit("chat", msg);
     });
 });
