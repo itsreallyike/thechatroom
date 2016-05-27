@@ -40,7 +40,7 @@ io.on("connection", function(socket) {
             var stream = col.find().sort({ _id : -1 }).limit(10).stream();
             stream.on("data", function(chat) {
                 console.log("emitting chat");
-                socket.emit("chat", chat.content);
+                socket.emit("chat", chat);
             }); 
         });
     });
