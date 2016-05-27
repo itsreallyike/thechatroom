@@ -35,37 +35,42 @@ io.on("connection", function(socket) {
     mongo.connect(MONGOLAB_URI, function(err, db) {
         if(err) {
         console.log("error connecting to mongo db")
-        } else {
-            var collection = db.collection("chat messages")
-            var stream = collection.find().sort().limit(10).stream();
+        }
+        db.collection("chat messages", function(err, col) {
+            var stream = col.find().sort().limit(10).stream();
             stream.on("data", function(chat) {
                 console.log("emitting chat");
                 socket.emit("chat", chat.content);
-            });
-        }
+            }); 
+        });
     });
     
     socket.on("disconnect", function() {
         console.log("user disconnected");
     });
-    
-    socket.on("chat", function (msg) {
+
+    socket.on("chat", function(msg) {
         mongo.connect(MONGOLAB_URI, function(err, db) {
-            if(err) {
-        console.log("error");
-            } else {
-                var collection = db.collection("chat messages");
-                collection.insert({content: msg}, function(err, doc) {
+            if (err) {
+                console.log("error");
+            }
+        //don't do spaces in collection names - make it async with callback
+            db.collection("chatmessages", function(err, col) {
+                if (err) {
+                    console.log(err)
+                    return;
+                }
+                col.insert({content: msg}, function(err, doc) {
                     if (err) {
                         console.log("error insterting msg to database")
-                    } else {
-                        console.log("inserted " + msg + "to db - content")
+                        return;
                     }
-                }); 
-            }
+                    console.log("inserted " + msg + "to db - content")
+                });
+            });
         });
         socket.broadcast.emit("chat", msg);
-    }); 
+    });
 });
 
 server.listen(app.get("port"), function (err, data) {
