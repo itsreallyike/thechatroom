@@ -38,10 +38,7 @@ io.on("connection", function(socket) {
         }
         var collection = db.collection("chat messages");
             var stream = collection.find().sort({_id : -1}).limit(5);
-            stream.on("data", function(chat) {
-                console.log("emitting chat");
-                socket.emit("chat", chat.content);
-            }); 
+        socket.emit("chat", stream.content);
         });
     
     socket.on("disconnect", function() {
