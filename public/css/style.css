@@ -2,6 +2,10 @@ html,
 body {
   height: 100%;
 }
+p {
+  font-size: x-small;
+  color: #C0C0C0;
+}
 .wrap {
   min-height: 100%;
   height: auto !important;
