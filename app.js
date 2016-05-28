@@ -37,7 +37,7 @@ io.on("connection", function(socket) {
         console.log("error connecting to mongo db")
         }
         var collection = db.collection("chat messages");
-            var stream = collection.find().sort({_id : -1}).limit(10).stream();
+            var stream = collection.find().sort({_id : -1}).limit(5);
             stream.on("data", function(chat) {
                 console.log("emitting chat");
                 socket.emit("chat", chat.content);
@@ -59,7 +59,7 @@ io.on("connection", function(socket) {
                         console.log("error insterting msg to database")
                         return;
                     }
-                    console.log("inserted " + msg + "to db - content")
+                    console.log("inserted " + msg + " to db - content")
                 });
             });
         socket.broadcast.emit("chat", msg);
