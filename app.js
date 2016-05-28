@@ -37,7 +37,7 @@ io.on("connection", function(socket) {
         console.log("error connecting to mongo db")
         }
         var collection = db.collection("chatmessages");
-            var stream = collection.find().sort({_id : -1}).limit(5).stream();
+            var stream = collection.find().sort({_id : -1}).limit(10).stream();
             stream.on("data", function(chat) {
                 socket.emit("chat", chat.content);
             });
