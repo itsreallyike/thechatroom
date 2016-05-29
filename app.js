@@ -9,7 +9,6 @@ var serveStatic = require('serve-static');
 var errorhandler = require('errorhandler');
 var jade = require('jade')
 var path = require('path');
-var MONGOLAB_URI = "mongodb://heroku_9b0h1n2s:a25o5qr7f0al9tp4jcmqfr0cic@ds017553.mlab.com:17553/heroku_9b0h1n2s"
 
 app.set('port', process.env.PORT || 8080);
 app.set('views', path.join(__dirname, 'views'));
@@ -32,7 +31,7 @@ app.get("/", function(req, res) {
 io.on("connection", function(socket) {
 	console.log("a user connected..");
     
-    mongo.connect(MONGOLAB_URI, function(err, db) {
+    mongo.connect(process.env.MONGOLAB_URI, function(err, db) {
         if(err) {
         console.log("error connecting to mongo db")
         }
