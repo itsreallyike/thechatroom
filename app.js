@@ -39,8 +39,8 @@ io.on("connection", function(socket) {
         var collection = db.collection("chatmessages");
             var stream = collection.find().sort({_id : -1}).limit(10).stream();
             stream.on("data", function(thecollection) {
-                socket.emit("chat", thecollection.chatroom.content);
-                socket.emit("login", thecollection.chatroom.users)
+                socket.emit("chat", thecollection.content);
+                socket.emit("login", thecollection.users)
             });
     });
     
