@@ -11,7 +11,9 @@ $("#login-btn").click(function() {
     return false
 });
 socket.on("login", function (username) {
+    if(username !== null) {
     $('#messages').append($('<p>').text("'" + username + "'" + " - has logged in."));
+    }
 });
 
 $('#send-message-btn').click(function () {
