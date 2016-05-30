@@ -1,9 +1,5 @@
 var socket = io();
 
-$("#send-message-btn").on('click', function(event) {
-    event.preventDefault();
-});
-
 $("#login-btn").click(function() {
     var username = $('#message-box').val(); //Type username and click login 
     socket.emit("login", username);

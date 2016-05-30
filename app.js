@@ -36,13 +36,14 @@ io.on("connection", function(socket) {
         if(err) {
         console.log("error connecting to mongo db")
         }
-        var collection = db.collection("chatmessages");
+        db.collection("chatmessages", function (collection) {
             var stream = collection.find().sort({_id : -1}).limit(10).stream();
             stream.on("data", function(thecollection) {
                 socket.emit("chat", thecollection.content);
                 socket.emit("login", thecollection.users)
             });
         });
+    });
     
     socket.on("disconnect", function() {
         console.log("user disconnected");
@@ -53,7 +54,7 @@ io.on("connection", function(socket) {
             if (err) {
                 console.log("error");
             }
-            var collection = db.collection("chatmessages");
+            db.collection("chatmessages", function(collection) {
                 collection.insert({users: username}, function(err, doc) {
                     if (err) {
                         console.log("error insterting username to database")
@@ -61,6 +62,7 @@ io.on("connection", function(socket) {
                     }
                     console.log(username + " logged in - users")
                 });
+            })
         });
         socket.broadcast.emit("login", username)
     });
@@ -70,7 +72,7 @@ io.on("connection", function(socket) {
             if (err) {
                 console.log("error");
             }
-            var collection = db.collection("chatmessages");
+           db.collection("chatmessages", function(collection) {
                 collection.insert({content: msg}, function(err, doc) {
                     if (err) {
                         console.log("error insterting msg to database")
@@ -78,6 +80,7 @@ io.on("connection", function(socket) {
                     }
                     console.log("inserted " + msg + " to db - content")
                 });
+           });
             });
         socket.broadcast.emit("chat", msg);
     });
