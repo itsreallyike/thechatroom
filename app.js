@@ -38,13 +38,31 @@ io.on("connection", function(socket) {
         }
         var collection = db.collection("chatmessages");
             var stream = collection.find().sort({_id : -1}).limit(10).stream();
-            stream.on("data", function(chat) {
-                socket.emit("chat", chat.content);
+            stream.on("data", function(thecollection) {
+                socket.emit("chat", thecollection.content);
+                socket.emit("login", thecollection.users)
             });
         });
     
     socket.on("disconnect", function() {
         console.log("user disconnected");
+    });
+    
+    socket.on("login", function(username) {
+        mongo.connect(MONGOLAB_URI, function(err, db) {
+            if (err) {
+                console.log("error");
+            }
+            var collection = db.collection("chatmessages");
+                collection.insert({users: username}, function(err, doc) {
+                    if (err) {
+                        console.log("error insterting username to database")
+                        return;
+                    }
+                    console.log(username + " logged in - users")
+                });
+        });
+        socket.broadcast.emit("login", username)
     });
 
     socket.on("chat", function(msg) {
