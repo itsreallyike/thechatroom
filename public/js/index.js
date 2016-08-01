@@ -1,8 +1,12 @@
 var socket = io();
 
-if($('message-box').val() !== null) {
-    $("#login-btn").prop("disabled", false)
-};
+$('message-box').on('keyup', function () {
+    if($(this).val().trim() === '') {
+           $("#login-btn").prop("disabled", true)
+    } else {
+        $("#login-btn").prop("disabled", false)
+    }
+});
 
 $("#login-btn").click(function() {
     var username = $('#message-box').val(); //Type username and click login 
