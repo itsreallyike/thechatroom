@@ -37,7 +37,7 @@ socket.on("login", function (username) {
     users2.push(username)
         if(users2.length - 1 < 10) {
             $('#messages').prepend($('<p>').text("'" + username + "'" + " logged in on" + " " + day + " at " + time))
-        } else {
+        } else if (username !== null) {
             $('#messages').append($('<p>').text("'" + username + "'" + " logged in on" + " " + day + " at " + time))
         };
 });
