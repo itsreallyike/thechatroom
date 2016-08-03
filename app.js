@@ -90,8 +90,11 @@ var user = [];
                 });
            };
         });
-            if(user.length - 1 > 1) {
+            for(var i = 0; i < 2; i ++) {
+                count += i
+                if(count > 0) {
                 socket.broadcast.emit("chat", message);
+                }
         };
     });
 });
