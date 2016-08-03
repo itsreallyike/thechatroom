@@ -90,7 +90,7 @@ var user = [];
                 });
            };
         });
-            if(user.length - 1 > 1)
+            if(user.length - 1 > 0)
                 socket.broadcast.emit("chat", message);
     });
 });
