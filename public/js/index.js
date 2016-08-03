@@ -60,9 +60,6 @@ socket.on('chat', function (message) {
 
     if(users.length - 1 < 10) {
         $('#messages').prepend($('<p>').text(message))
-    } 
-    if(users.length - 1 === 10) {
-        return
     } else {
         $('#messages').append($('<p>').text(message));
     }
