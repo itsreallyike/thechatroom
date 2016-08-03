@@ -52,12 +52,13 @@ io.on("connection", function(socket) {
         var dt = new Date();
         var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
         var day = dt.toDateString();
+        userN = "'" + username + "'" + " logged in on" + " " + day + " at " + time
         mongo.connect(MONGOLAB_URI, function(err, db) {
             if (err) {
                 console.log("error");
             }
             var collection = db.collection("chatmessages");
-                collection.insert({users: "'" + username + "'" + " logged in on" + " " + day + " at " + time}, function(err, doc) {
+                collection.insert({users: userN}, function(err, doc) {
                     if (err) {
                         console.log("error insterting username to database")
                         return;
@@ -89,7 +90,9 @@ var user = [];
                 });
            };
         });
-        socket.broadcast.emit("chat", message);
+            if(user.length - 1 > 1) {
+                socket.broadcast.emit("chat", message);
+        };
     });
 });
 
