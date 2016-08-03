@@ -16,7 +16,7 @@ $("#login-btn").click(function() {
     var message1 = $('#message-box').val();
     var username = "'" + message1 + "'" + " logged in on" + " " + day + " at " + time
     socket.emit("login", username);
-    socket.emit("chat", username)
+    socket.emit("chat", message1)
     $('#messages').append($('<p>').text("you have logged in as '" + message1 + "' {" +time+ "}"));
     $('#message-box').val('');
     $('#message-box').attr("placeholder", "Dunjazz write a message here...").val('').focus().blur();
