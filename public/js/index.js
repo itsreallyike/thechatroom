@@ -3,8 +3,6 @@ var socket = io();
 var users = []
 var message = ''
 
-$("#login-btn").prop("disabled", true);
-
 $('#message-box').on('keyup', function() {
     var status = ($('#message-box').val().trim() === '')
            $("#login-btn").prop("disabled", status)
