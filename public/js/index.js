@@ -35,7 +35,7 @@ socket.on("login", function (username) {
     var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
     var day = dt.toDateString();
     users2.push(username)
-        if(users2.length - 1 < 10) {
+        if(users2.length - 1 < 10 && username !== null) {
             $('#messages').prepend($('<p>').text("'" + username + "'" + " logged in on" + " " + day + " at " + time))
         } else if (username !== null) {
             $('#messages').append($('<p>').text("'" + username + "'" + " logged in on" + " " + day + " at " + time))

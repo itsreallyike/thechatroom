@@ -75,13 +75,15 @@ var user = [];
                 console.log("error");
             }
            var collection = db.collection("chatmessages");
-                collection.insert({content: username + ":" + msg}, function(err, doc) {
+           if(user.length - 1 > 1) {
+                collection.insert({content: username + ": " + msg}, function(err, doc) {
                     if (err) {
                         console.log("error insterting msg to database")
                         return;
                     }
                     console.log("inserted " + msg + " to db - content")
                 });
+           };
         });
         socket.broadcast.emit("chat", msg);
     });
