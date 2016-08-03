@@ -55,25 +55,14 @@ $('#send-message-btn').click(sendClick);
         return false;
     };
 
-socket.on('chat', function (msg) {
-    users.push(msg)
+socket.on('chat', function (message) {
+    users.push(message)
 
-    for(var i = 0; i <= users.length - 1; i++) {
-        if(users.length - 1 > 10) {
-            message = msg
-        } else {
-            message = "USernameWORKEDBABY"
-        }; 
-    };
-
-    if(users[10] !== null ) {
-    username = users[10]
-    };
     if(users.length - 1 < 10) {
-        $('#messages').prepend($('<p>').text(msg))
+        $('#messages').prepend($('<p>').text(message))
     } else if(users.length - 1 === 10) {
         return
     } else {
-        $('#messages').append($('<p>').text(username + ": " + message));
+        $('#messages').append($('<p>').text(message));
     };
 });

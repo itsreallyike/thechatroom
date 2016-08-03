@@ -72,6 +72,7 @@ var user = [];
     socket.on("chat", function(msg) {
         user.push(msg)
         username = user[0]
+        message = username + ": " + msg
 
         mongo.connect(MONGOLAB_URI, function(err, db) {
             if (err) {
@@ -79,7 +80,7 @@ var user = [];
             }
            var collection = db.collection("chatmessages");
            if(user.length - 1 > 1) {
-                collection.insert({content: username + ": " + msg}, function(err, doc) {
+                collection.insert({content: message}, function(err, doc) {
                     if (err) {
                         console.log("error insterting msg to database")
                         return;
@@ -88,7 +89,7 @@ var user = [];
                 });
            };
         });
-        socket.broadcast.emit("chat", msg);
+        socket.broadcast.emit("chat", message);
     });
 });
 
