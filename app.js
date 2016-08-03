@@ -90,12 +90,11 @@ var user = [];
                 });
            };
         });
-            for(var i = 0; i < 2; i ++) {
-                count += i
-                if(count > 0) {
+            if(user.length - 1 > 1) {
                 socket.broadcast.emit("chat", message);
-                }
-        };
+        } else {
+            return
+        }
     });
 });
 
