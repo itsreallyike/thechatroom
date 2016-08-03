@@ -12,10 +12,11 @@ $('#message-box').on('keyup', function() {
 $("#login-btn").click(function() {
     var dt = new Date();
     var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
-    var username = $('#message-box').val();
+    var message = $('#message-box').val();
+    var username = "'" + message + "'" + " logged in on" + " " + day + " at " + time
     socket.emit("login", username);
     socket.emit("chat", username)
-    $('#messages').append($('<p>').text("you have logged in as '" + username + "' {" +time+ "}"));
+    $('#messages').append($('<p>').text("you have logged in as '" + message + "' {" +time+ "}"));
     $('#message-box').val('');
     $('#message-box').attr("placeholder", "Dunjazz write a message here...").val('').focus().blur();
     $("#login-btn").remove();
