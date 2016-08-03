@@ -12,11 +12,12 @@ $('#message-box').on('keyup', function() {
 $("#login-btn").click(function() {
     var dt = new Date();
     var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
-    var message = $('#message-box').val();
-    var username = "'" + message + "'" + " logged in on" + " " + day + " at " + time
+    var day = dt.toDateString();
+    var message1 = $('#message-box').val();
+    var username = "'" + message1 + "'" + " logged in on" + " " + day + " at " + time
     socket.emit("login", username);
     socket.emit("chat", username)
-    $('#messages').append($('<p>').text("you have logged in as '" + message + "' {" +time+ "}"));
+    $('#messages').append($('<p>').text("you have logged in as '" + message1 + "' {" +time+ "}"));
     $('#message-box').val('');
     $('#message-box').attr("placeholder", "Dunjazz write a message here...").val('').focus().blur();
     $("#login-btn").remove();
@@ -32,14 +33,11 @@ $("#login-btn").click(function() {
     });
 });
 socket.on("login", function (username) {
-    var dt = new Date();
-    var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
-    var day = dt.toDateString();
     users2.push(username)
         if(users2.length - 1 < 10 && username !== null) {
             $('#messages').prepend($('<p>').text(username))
         } else if (username !== null) {
-            $('#messages').append($('<p>').text("'" + username + "'" + " logged in on" + " " + day + " at " + time))
+            $('#messages').append($('<p>').text(username))
         };
 });
 
