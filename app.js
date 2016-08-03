@@ -65,13 +65,17 @@ io.on("connection", function(socket) {
         socket.broadcast.emit("login", username)
     });
 
+var user = [];
     socket.on("chat", function(msg) {
+        user.push(msg)
+        username = user[0]
+
         mongo.connect(MONGOLAB_URI, function(err, db) {
             if (err) {
                 console.log("error");
             }
            var collection = db.collection("chatmessages");
-                collection.insert({content: msg}, function(err, doc) {
+                collection.insert({content: username + ":" + msg}, function(err, doc) {
                     if (err) {
                         console.log("error insterting msg to database")
                         return;
