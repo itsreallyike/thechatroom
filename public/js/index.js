@@ -1,6 +1,7 @@
 var socket = io();
 
 var users = [];
+var users2 = [];
 var message = ''
 
 $('#message-box').on('keyup', function() {
@@ -33,8 +34,8 @@ socket.on("login", function (username) {
     var dt = new Date();
     var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
     var day = dt.toDateString();
-    users.push(username)
-        if(users.length - 1 < 10) {
+    users2.push(username)
+        if(users2.length - 1 < 10) {
             $('#messages').prepend($('<p>').text("'" + username + "'" + " logged in on" + " " + day + " at " + time))
         } else {
             $('#messages').append($('<p>').text("'" + username + "'" + " logged in on" + " " + day + " at " + time))
