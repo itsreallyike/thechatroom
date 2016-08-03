@@ -44,9 +44,8 @@ io.on("connection", function(socket) {
             });
     });
     
-    socket.on("disconnect", function(message1) {
+    socket.on("disconnect", function() {
         console.log("user disconnected");
-        socket.broadcast.emit("disconnect", message1)
     });
     
     socket.on("login", function(username) {
