@@ -66,7 +66,7 @@ socket.on('chat', function (msg) {
     username = users[10]
     };
     if(users.length - 1 < 10) {
-        $('#messages').append($('<p>').text(msg).reverse())
+        $('#messages').prepend($('<p>').text(msg))
     } else if(users.length - 1 === 10) {
         return
     } else {
