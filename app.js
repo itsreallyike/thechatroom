@@ -80,7 +80,7 @@ var user = [];
                 console.log("error");
             }
            var collection = db.collection("chatmessages");
-           if(user.length - 1 > 1) {
+           if(user.length - 1 > 0) {
                 collection.insert({content: message}, function(err, doc) {
                     if (err) {
                         console.log("error insterting msg to database")
