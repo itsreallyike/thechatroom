@@ -19,7 +19,7 @@ $("#login-btn").click(function() {
     socket.emit("chat", message1);
     $('#messages').append($('<p>').text("you have logged in as '" + message1 + "' {" +time+ "}"));
     $('#message-box').val('');
-    $('#message-box').attr("placeholder", "Dunjazz write a message here...").val('').focus().blur();
+    $('#message-box').attr("placeholder", "Write a message..").val('').focus().blur();
     $("#login-btn").remove();
     $('#message-box').on('keyup', function() {
         var status = ($('#message-box').val().trim() === '')
