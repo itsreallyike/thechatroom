@@ -4,6 +4,7 @@ var users = [];
 var users2 = [];
 var message = ''
 
+$("#upload-btn").css("visibility", "hidden")
 $('#message-box').on('keyup', function() {
     var status = ($('#message-box').val().trim() === '')
            $("#login-btn").prop("disabled", status)
@@ -21,9 +22,11 @@ $("#login-btn").click(function() {
     $('#message-box').val('');
     $('#message-box').attr("placeholder", "Write a message..").val('').focus().blur();
     $("#login-btn").remove();
+    $("#upload-btn").css("visibility", "visible");
+    $("#upload-btn").prop("disabled", false);
     $('#message-box').on('keyup', function() {
         var status = ($('#message-box').val().trim() === '')
-        $("#send-message-btn").prop("disabled", status)
+        $("#send-message-btn").prop("disabled", status);
     });
     $('#message-box').keyup(function(event){
         if(event.keyCode == 13 && $('#message-box').val().trim() !== ''){
@@ -40,6 +43,21 @@ socket.on("login", function (username) {
             $('#messages').append($('<p>').text(username))
         };
 });
+
+$("#upload-btn").click(uploadContent)
+
+function uploadContent() {
+    $("#uploadFile").click() 
+   var upload = $("#uploadFile")
+   upload.on("change", function(e) {
+       var file = upload.files[0];
+       
+        form.parse(item, function(error, fields, files) {
+            if(files !== null)
+	        socket.emit("upload", files)
+	        }); 
+        });
+}
 
 $('#send-message-btn').click(sendClick);
     

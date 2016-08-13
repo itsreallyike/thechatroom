@@ -7,6 +7,10 @@ body {
   font-family: Cambria Math;
   font-style: bold;
 }
+.imageuploader {
+  height: 0px;
+  overflow: hidden;
+}
 .wrap {
   min-height: 100%;
   height: auto !important;
