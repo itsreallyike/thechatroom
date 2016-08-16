@@ -104,7 +104,7 @@ io.on("connection", function(socket) {
      var count = [];
      count.push(evt)
      username = count[0]
-     if(count.length - 1 > 0) {
+     if(count.length - 1 > 0 && evt !== null) {
         var data = evt.target.result;
         var buffer = new Buffer(data, 'base64');
         var message1 = {
