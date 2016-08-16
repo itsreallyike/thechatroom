@@ -1,6 +1,5 @@
 var socket = io();
 
-var users = [];
 var users2 = [];
 var message = ''
 
@@ -18,6 +17,7 @@ $("#login-btn").click(function() {
     var username = "'" + message1 + "'" + " logged in on" + " " + day + " at " + time
     socket.emit("login", username);
     socket.emit("chat", message1);
+    socket.emit("upload", message1)
     $('#messages').append($('<p>').text("you have logged in as '" + message1 + "' {" +time+ "}"));
     $('#message-box').val('');
     $('#message-box').attr("placeholder", "Write a message..").val('').focus().blur();
@@ -44,24 +44,32 @@ socket.on("login", function (username) {
         };
 });
 
-$("#upload-btn").click(uploadContent)
+$("#upload-btn").click(function() {
+    $("#uploadFile").click();
+    var upload = $("#uploadFile")
+    upload.on("change", function(e) {
+        var file = e.target.files[0];
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = function(evt) {
+            socket.emit("upload", evt.target.result);
+            $('#messages').append($('<p>').text(message), '<img src="' + evt.target.result + '"/>')
+        };
+    });
+});
 
-function uploadContent() {
-    $("#uploadFile").click() 
-   var upload = $("#uploadFile")
-   upload.on("change", function(e) {
-       var file = upload.files[0];
-       
-        form.parse(item, function(error, fields, files) {
-            if(files !== null)
-	        socket.emit("upload", files)
-	        }); 
-        });
-}
+socket.on("upload", function(message) {
+    var count = [];
+    count.push(message)
+    var message1 = JSON.parse(message)
+    if(count.length - 1 < 10) {
+        $('#messages').prepend($('<p>').text(message1.user + ": " + message1.msg))
+    } else {
+        $('#messages').append($('<p>').text(message1.user + ": " + message1.msg));
+    }
+});
 
-$('#send-message-btn').click(sendClick);
-    
-    function sendClick () {
+$('#send-message-btn').click(function() {
         var dt = new Date();
         var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
         var msg = $('#message-box').val() + " {" +time+ "}";
@@ -70,14 +78,15 @@ $('#send-message-btn').click(sendClick);
         $('#message-box').val('');
         $('#send-message-btn').prop('disabled', true)
         return false;
-    };
+    });
 
 socket.on('chat', function (message) {
-    users.push(message)
-
-    if(users.length - 1 < 10) {
-        $('#messages').prepend($('<p>').text(message))
+    var count = [];
+    count.push(message)
+    var message1 = JSON.parse(message)
+    if(count.length - 1 < 10) {
+        $('#messages').prepend($('<p>').text(message1.user + ": " + message1.msg))
     } else {
-        $('#messages').append($('<p>').text(message));
+        $('#messages').append($('<p>').text(message1.user + ": " + message1.msg));
     }
 });

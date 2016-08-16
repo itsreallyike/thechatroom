@@ -4,10 +4,10 @@ body {
 }
 #messages {
   color: #00f;
-  font-family: Cambria Math;
+  font-family: Helvetica;
   font-style: bold;
 }
-.imageuploader {
+.uploader {
   height: 0px;
   overflow: hidden;
 }
