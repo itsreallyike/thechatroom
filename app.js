@@ -44,8 +44,8 @@ io.on("connection", function(socket) {
             stream.on("data", function(thecollection) {
                 socket.emit("login", thecollection.users);
                 socket.emit("chat", thecollection.messages);
-                socket.emit("upload", thecollection.videos);
-                socket.emit("upload", thecollection.images);
+                //socket.emit("upload", thecollection.videos);
+                //socket.emit("upload", thecollection.images);
             });
     });
     
@@ -74,13 +74,12 @@ io.on("connection", function(socket) {
         var count = [];
         count.push(msg)
         username = count[0]
-        if(count.length - 1 > 0) {
+       // if(count.length - 1 > 0) {
             message1 = {
                 user: username,
                 msg: msg
             };
             message = JSON.stringify(message1);
-            testMessage = JSON.parse(message)
             
                 mongo.connect(MONGOLAB_URI, function(err, db) {
                     if (err) {
@@ -95,8 +94,8 @@ io.on("connection", function(socket) {
                             console.log("inserted " + message + " to db - content")
                         });
                 });
-        }
-            if(count.length - 1 > 0)
+        //}
+            //if(count.length - 1 > 0)
                 socket.broadcast.emit("chat", message);
     });
 

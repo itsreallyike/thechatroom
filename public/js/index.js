@@ -17,7 +17,7 @@ $("#login-btn").click(function() {
     var username = "'" + message1 + "'" + " logged in on" + " " + day + " at " + time
     socket.emit("login", username);
     socket.emit("chat", message1);
-    socket.emit("upload", message1)
+   //socket.emit("upload", message1)
     $('#messages').append($('<p>').text("you have logged in as '" + message1 + "' {" +time+ "}"));
     $('#message-box').val('');
     $('#message-box').attr("placeholder", "Write a message..").val('').focus().blur();
@@ -44,7 +44,7 @@ socket.on("login", function (username) {
         };
 });
 
-$("#upload-btn").click(function() {
+/*$("#upload-btn").click(function() {
     $("#uploadFile").click();
     var upload = $("#uploadFile")
     upload.on("change", function(e) {
@@ -56,9 +56,9 @@ $("#upload-btn").click(function() {
             $('#messages').append($('<p>').text(message), '<img src="' + evt.target.result + '"/>')
         };
     });
-});
+});*/
 
-socket.on("upload", function(message) {
+/*socket.on("upload", function(message) {
     var count = [];
     count.push(message)
     var message1 = JSON.parse(message)
@@ -67,7 +67,7 @@ socket.on("upload", function(message) {
     } else {
         $('#messages').append($('<p>').text(message1.user + ": " + message1.msg));
     }
-});
+});*/
 
 $('#send-message-btn').click(function() {
         var dt = new Date();
