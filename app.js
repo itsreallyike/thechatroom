@@ -95,15 +95,16 @@ io.on("connection", function(socket) {
                 });
            };
         });
-            //if(count.length - 1 > 0)
+            if(count.length - 1 > 0)
                 socket.broadcast.emit("chat", message);
+                console.log("message emitted" + message);
     });
 
  socket.on("upload", function(evt) {
      var data = evt.target.result 
      var buffer = new Buffer(data, 'base64');
-     var user = [];
-     user.push(evt)
+     var count = [];
+     count.push(evt)
      username = user[0]
      var message1 = {
          user: username,
@@ -121,7 +122,7 @@ io.on("connection", function(socket) {
             }
             var collection = db.collection("chatmessages");
 
-            if(buffer.toString().includes("image") && user.length - 1 > 0) {
+            if(buffer.toString().includes("image") && count.length - 1 > 0) {
                 collection.insert({images: messageMongo}, function(err, doc) {
                     if (err) {
                         console.log("error insterting image data to database")
@@ -129,7 +130,7 @@ io.on("connection", function(socket) {
                     }
                 });
             } 
-            if(buffer.toString().includes("video") && user.length - 1 > 0) {
+            if(buffer.toString().includes("video") && count.length - 1 > 0) {
                 collection.insert({videos: messageMongo}, function(err, doc) {
                     if (err) {
                         console.log("error insterting video data to database")
@@ -138,12 +139,10 @@ io.on("connection", function(socket) {
                 }); 
             }
         });
-        //if(user.length - 1 > 0)
+        if(count.length - 1 > 0)
             socket.broadcast.emit("upload", message);
     });
 });
-
-
 server.listen(app.get("port"), function () {
 	console.log("listening on " + app.get("port"));
 });
