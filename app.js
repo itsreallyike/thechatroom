@@ -95,7 +95,7 @@ io.on("connection", function(socket) {
                 });
            };
         });
-            if(count.length - 1 > 0)
+            //if(count.length - 1 > 0)
                 socket.broadcast.emit("chat", message);
     });
 
@@ -138,8 +138,8 @@ io.on("connection", function(socket) {
                 }); 
             }
         });
-        if(user.length - 1 > 0)
-            socket.broadcast.emit("upload", message)
+        //if(user.length - 1 > 0)
+            socket.broadcast.emit("upload", message);
     });
 });
 
