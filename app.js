@@ -74,71 +74,74 @@ io.on("connection", function(socket) {
         var count = [];
         count.push(msg)
         username = count[0]
-        message1 = {
-            user: username,
-            msg: msg
-        };
-        var message = JSON.stringify(message1);
-
-        mongo.connect(MONGOLAB_URI, function(err, db) {
-            if (err) {
-                console.log("error");
-            }
-           var collection = db.collection("chatmessages");
-           if(count.length - 1 > 0) {
-                collection.insert({messages: message}, function(err, doc) {
+        if(count.length - 1 > 0) {
+            message1 = {
+                user: username,
+                msg: msg
+            };
+            message = JSON.stringify(message1);
+            testMessage = JSON.parse(message)
+            
+                mongo.connect(MONGOLAB_URI, function(err, db) {
                     if (err) {
-                        console.log("error insterting msg to database")
-                        return;
+                        console.log("error");
                     }
-                    console.log("inserted " + message + " to db - content")
+                    var collection = db.collection("chatmessages");
+                        collection.insert({messages: message}, function(err, doc) {
+                            if (err) {
+                                console.log("error insterting msg to database")
+                                return;
+                            }
+                            console.log("inserted " + message + " to db - content")
+                        });
                 });
-           };
-        });
+        }
             if(count.length - 1 > 0)
                 socket.broadcast.emit("chat", message);
-                console.log("message emitted" + message);
     });
 
  socket.on("upload", function(evt) {
-     var data = evt.target.result 
-     var buffer = new Buffer(data, 'base64');
      var count = [];
      count.push(evt)
-     username = user[0]
-     var message1 = {
-         user: username,
-         msg: data
+     username = count[0]
+     if(count.length - 1 > 0) {
+        var data = evt.target.result;
+        var buffer = new Buffer(data, 'base64');
+        var message1 = {
+            user: username,
+            msg: data
         };
-     var message2 = {
-         user: username,
-         msg: data.split(',')[1]
+        var message2 = {
+            user: username,
+            msg: data.split(',')[1]
         };
-     var message = JSON.stringify(message1)
-     var messageMongo = JSON.stringify(message2)
-     mongo.connect(MONGOLAB_URI, function(err, db) {
-            if (err) {
-                console.log("error");
-            }
-            var collection = db.collection("chatmessages");
+        var message = JSON.stringify(message1)
+        var messageMongo = JSON.stringify(message2)
 
-            if(buffer.toString().includes("image") && count.length - 1 > 0) {
-                collection.insert({images: messageMongo}, function(err, doc) {
-                    if (err) {
-                        console.log("error insterting image data to database")
-                        return;
-                    }
-                });
-            } 
-            if(buffer.toString().includes("video") && count.length - 1 > 0) {
-                collection.insert({videos: messageMongo}, function(err, doc) {
-                    if (err) {
-                        console.log("error insterting video data to database")
-                        return;
-                    }
-                }); 
-            }
-        });
+        mongo.connect(MONGOLAB_URI, function(err, db) {
+                if (err) {
+                    console.log("error");
+                }
+                var collection = db.collection("chatmessages");
+
+                if(buffer.toString().includes("image")) {
+                    collection.insert({images: messageMongo}, function(err, doc) {
+                        if (err) {
+                            console.log("error insterting image data to database")
+                            return;
+                        }
+                    });
+                } 
+                if(buffer.toString().includes("video")) {
+                    collection.insert({videos: messageMongo}, function(err, doc) {
+                        if (err) {
+                            console.log("error insterting video data to database")
+                            return;
+                        }
+                    }); 
+                }
+            });
+     }
         if(count.length - 1 > 0)
             socket.broadcast.emit("upload", message);
     });
