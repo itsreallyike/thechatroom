@@ -118,7 +118,7 @@ io.on("connection", function(socket) {
         var message = JSON.stringify(message1)
         var messageMongo = JSON.stringify(message2)
 
-        mongo.connect(MONGOLAB_URI, function(err, db) {
+        /*mongo.connect(MONGOLAB_URI, function(err, db) {
                 if (err) {
                     console.log("error");
                 }
@@ -140,7 +140,7 @@ io.on("connection", function(socket) {
                         }
                     }); 
                 }
-            });
+            });*/
      }
         if(count.length - 1 > 0)
             socket.broadcast.emit("upload", message);
