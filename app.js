@@ -100,7 +100,7 @@ io.on("connection", function(socket) {
                 socket.broadcast.emit("chat", message);
     });
 
- socket.on("upload", function(evt) {
+ /*socket.on("upload", function(evt) {
      var count = [];
      count.push(evt)
      username = count[0]
@@ -118,7 +118,7 @@ io.on("connection", function(socket) {
         var message = JSON.stringify(message1)
         var messageMongo = JSON.stringify(message2)
 
-        /*mongo.connect(MONGOLAB_URI, function(err, db) {
+        mongo.connect(MONGOLAB_URI, function(err, db) {
                 if (err) {
                     console.log("error");
                 }
@@ -140,11 +140,11 @@ io.on("connection", function(socket) {
                         }
                     }); 
                 }
-            });*/
+            });
      }
         if(count.length - 1 > 0)
             socket.broadcast.emit("upload", message);
-    });
+    });*/
 });
 server.listen(app.get("port"), function () {
 	console.log("listening on " + app.get("port"));
