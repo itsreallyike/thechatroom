@@ -1,7 +1,7 @@
 var socket = io();
 
 var users2 = [];
-var message = ''
+var count = [];
 
 $("#upload-btn").css("visibility", "hidden")
 $('#message-box').on('keyup', function() {
@@ -64,7 +64,6 @@ $("#upload-btn").click(function() {
 });
 
 socket.on("upload", function(message) {
-    var count = [];
     count.push(message)
     var message1 = JSON.parse(message)
     if(message1.msg.includes("image")) {
@@ -95,7 +94,6 @@ $('#send-message-btn').click(function() {
     });
 
 socket.on('chat', function (message) {
-    var count = [];
     count.push(message)
     var message1 = JSON.parse(message)
     if(count.length - 1 < 10) {

@@ -13,7 +13,8 @@ var grid = require("gridfs-stream");
 var jade = require('jade')
 var path = require('path');
 var MONGOLAB_URI = "mongodb://heroku_9b0h1n2s:a25o5qr7f0al9tp4jcmqfr0cic@ds017553.mlab.com:17553/heroku_9b0h1n2s"
-var count = []
+var count1 = []
+var count2 = []
 
 app.set('port', process.env.PORT || 8080);
 app.set('views', path.join(__dirname, 'views'));
@@ -72,14 +73,14 @@ io.on("connection", function(socket) {
     });
 
     socket.on("chat", function(msg) {
-        count.push(msg)
-        var username = count[0]
+        count1.push(msg)
+        var username = count1[0]
             message1 = {
                 user: username,
                 msg: msg
             };
         message = JSON.stringify(message1);
-        if(count.length - 1 > 0) {
+        if(count1.length - 1 > 0) {
             mongo.connect(MONGOLAB_URI, function(err, db) {
                 if (err) {
                     console.log("error");
@@ -94,13 +95,13 @@ io.on("connection", function(socket) {
                     });
                 });
         };
-        if(count.length - 1 > 0)
+        if(count1.length - 1 > 0)
             socket.broadcast.emit("chat", message);
     });
 
     socket.on("upload", function(up) {
-        count.push(up)
-        var username = count[0]
+        count2.push(up)
+        var username = count2[0]
         console.log("server obtained upload content")
         var data = up;
         var message1 = {
@@ -109,9 +110,9 @@ io.on("connection", function(socket) {
         };
         var message = JSON.stringify(message1)
         console.log(data.split(',')[0])
-        console.log(count[0] + "issss!")
+        console.log(count2[0] + "issss!")
             
-        if(count.length - 1 > 0) {
+        if(count2.length - 1 > 0) {
             mongo.connect(MONGOLAB_URI, function(err, db) {
                 if (err) {
                     console.log("error");
@@ -136,7 +137,7 @@ io.on("connection", function(socket) {
                 }
             });
         }
-        if(count.length - 1 > 0)
+        if(count2.length - 1 > 0)
             socket.broadcast.emit("upload", message);
     });
 });
