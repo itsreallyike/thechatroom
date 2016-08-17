@@ -1,5 +1,4 @@
 var socket = io();
-
 var users2 = [];
 var count = [];
 
@@ -64,13 +63,15 @@ $("#upload-btn").click(function() {
 });
 
 socket.on("upload", function(message) {
+    var count = [];
     count.push(message)
-    var message1 = JSON.parse(message)
+    var message1 = {};
+    message1 = JSON.parse(message)
     if(message1.msg.includes("image")) {
         if(count.length - 1 < 10) {
-            $('#messages').prepend($('<p>').text(message1.user + ": "), '<img src="' + message1.msg + '"/>');
+            $('#messages').prepend($('<p>').text(message1.user + ": "), '<img src="' + message1.msg + '"/>', $('<p>'));
         } else {
-            $('#messages').append($('<p>').text(message1.user + ": "), '<img src="' + message1.msg + '"/>');
+            $('#messages').append($('<p>').text(message1.user + ": "), '<img src="' + message1.msg + '"/>', $('<p>'));
         }
     }
     if(message1.msg.includes("video")) {
@@ -95,7 +96,8 @@ $('#send-message-btn').click(function() {
 
 socket.on('chat', function (message) {
     count.push(message)
-    var message1 = JSON.parse(message)
+    var message1 = {};
+    message1 = JSON.parse(message)
     if(count.length - 1 < 10) {
         $('#messages').prepend($('<p>').text(message1.user + ": " + message1.msg))
     } else {
