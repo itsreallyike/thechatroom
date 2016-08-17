@@ -53,8 +53,13 @@ $("#upload-btn").click(function() {
         reader.readAsDataURL(file);
         reader.onloadend = function(evt) {
             socket.emit("upload", evt.target.result);
-            $('#messages').append($('<p>').text(message), '<img src="' + evt.target.result + '"/>')
-        };
+            if(evt.target.result.includes("image")) {
+                $('#messages').append($('<p>').text(message), '<img src="' + evt.target.result + '"/>')
+            }
+            if(evt.target.result.includes("video")) {
+                $('#messages').append($('<p>').text(message), '<video src="' + evt.target.result + '"controls/>')
+            };
+        }
     });
 });
 
@@ -62,10 +67,19 @@ socket.on("upload", function(message) {
     var count = [];
     count.push(message)
     var message1 = JSON.parse(message)
-    if(count.length - 1 < 10) {
-        $('#messages').prepend($('<p>').text(message1.user + ": " + message1.msg))
-    } else {
-        $('#messages').append($('<p>').text(message1.user + ": " + message1.msg));
+    if(message1.msg.includes("image")) {
+        if(count.length - 1 < 10) {
+            $('#messages').prepend($('<p>').text(message1.user + ": "), '<img src="' + message1.msg + '"/>');
+        } else {
+            $('#messages').append($('<p>').text(message1.user + ": "), '<img src="' + message1.msg + '"/>');
+        }
+    }
+    if(message1.msg.includes("video")) {
+        if(count.length - 1 < 10) {
+            $('#messages').prepend($('<p>').text(message1.user + ": "), '<video src="' + message1.msg + '"controls/>');
+        } else {
+            $('#messages').append($('<p>').text(message1.user + ": "), '<video src="' + message1.msg + '"controls/>');
+        }
     }
 });
 

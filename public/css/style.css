@@ -2,6 +2,34 @@ html,
 body {
   height: 100%;
 }
+h1 {
+  position: fixed;
+  background-color: #fff;
+  border: solid 6px #fff;
+}
+#container2 {
+  position: fixed;
+  margin-top: 70px;
+  background-color: #fff;
+  border: solid 6px #fff;
+}
+.pull-right {
+  position: absolute;
+  right: -550px;
+}
+#container {
+  margin-top: 150px;
+}
+#container img {
+  max-width: 275px;
+  max-height: 183px;
+  display: block;
+}
+#container video {
+  max-width: 275px;
+  max-height: 183px;
+  display: block;
+}
 #messages {
   color: #00f;
   font-family: Helvetica;
