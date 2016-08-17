@@ -13,6 +13,7 @@ var grid = require("gridfs-stream");
 var jade = require('jade')
 var path = require('path');
 var MONGOLAB_URI = "mongodb://heroku_9b0h1n2s:a25o5qr7f0al9tp4jcmqfr0cic@ds017553.mlab.com:17553/heroku_9b0h1n2s"
+var count = []
 
 app.set('port', process.env.PORT || 8080);
 app.set('views', path.join(__dirname, 'views'));
@@ -71,7 +72,6 @@ io.on("connection", function(socket) {
     });
 
     socket.on("chat", function(msg) {
-        var count = [];
         count.push(msg)
         var username = count[0]
             message1 = {
@@ -99,7 +99,6 @@ io.on("connection", function(socket) {
     });
 
     socket.on("upload", function(up) {
-        var count = [];
         count.push(up)
         var username = count[0]
         console.log("server obtained upload content")
@@ -110,6 +109,7 @@ io.on("connection", function(socket) {
         };
         var message = JSON.stringify(message1)
         console.log(data.split(',')[0])
+        console.log(count[0] + "issss!")
             
         if(count.length - 1 > 0) {
             mongo.connect(MONGOLAB_URI, function(err, db) {
