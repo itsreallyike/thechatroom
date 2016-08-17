@@ -73,7 +73,7 @@ io.on("connection", function(socket) {
     socket.on("chat", function(msg) {
         var count = [];
         count.push(msg)
-        username = count[0]
+        var username = count[0]
             message1 = {
                 user: username,
                 msg: msg
@@ -93,14 +93,15 @@ io.on("connection", function(socket) {
                         console.log("inserted " + message + " to db - content")
                     });
                 });
-            socket.broadcast.emit("chat", message);
         };
+        if(count.length - 1 > 0)
+            socket.broadcast.emit("chat", message);
     });
 
     socket.on("upload", function(up) {
         var count = [];
         count.push(up)
-        username = count[0]
+        var username = count[0]
         console.log("server obtained upload content")
         var data = up;
         var message1 = {
@@ -134,8 +135,9 @@ io.on("connection", function(socket) {
                     }); 
                 }
             });
-            socket.broadcast.emit("upload", message);
         }
+        if(count.length - 1 > 0)
+            socket.broadcast.emit("upload", message);
     });
 });
 server.listen(app.get("port"), function () {
