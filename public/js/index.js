@@ -12,12 +12,12 @@ $("#login-btn").click(function() {
     var dt = new Date();
     var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
     var day = dt.toDateString();
-    var message1 = $('#message-box').val();
-    var username = "'" + message1 + "'" + " logged in on" + " " + day + " at " + time
-    socket.emit("login", username);
-    socket.emit("chat", message1);
-    socket.emit("upload", message1);
-    $('#messages').append($('<p>').text("you have logged in as '" + message1 + "' {" +time+ "}"));
+    var message3 = $('#message-box').val();
+    var username1 = "'" + message3 + "'" + " logged in on" + " " + day + " at " + time
+    socket.emit("login", username1);
+    socket.emit("chat", message3);
+    socket.emit("upload", message3);
+    $('#messages').append($('<p>').text("you have logged in as '" + message3 + "' {" +time+ "}"));
     $('#message-box').val('');
     $('#message-box').attr("placeholder", "Write a message..").val('').focus().blur();
     $("#login-btn").remove();
@@ -34,12 +34,30 @@ $("#login-btn").click(function() {
         } return false
     });
 });
+socket.on("mongo", function(collection) {
+    messages = JSON.parse(collection)
+
+    if(messages.user1 && messages.user1 !== null) {
+        $('#messages').prepend($('<p>').text(messages.user1))
+        }
+    if(messages.user2) {
+        $('#messages').prepend($('<p>').text(messages.user2 + ": " + messages.msg2)) 
+        } 
+    if(messages.msg3.includes("data:image/")) {
+        if(messages.user3) {
+            $('#messages').prepend($('<p>').text(messages.user3 + ": "), '<img src="' + messages.msg3 + '"/>', $('<p>'));
+            } 
+    }
+    if(messages.msg3.includes("data:video/")) {
+        if(messages.user3) {
+            $('#messages').prepend($('<p>').text(messages.user3 + ": "), '<video src="' + messages.msg3 + '"controls/>');
+            } 
+    }
+})
 socket.on("login", function (username) {
-    users2.push(username)
-        if(users2.length - 1 < 10 && username !== null) {
-            $('#messages').prepend($('<p>').text(username))
-        } else if (username !== null) {
-            $('#messages').append($('<p>').text(username))
+    login = JSON.parse(username)
+       if (login.user1 !== null) {
+            $('#messages').append($('<p>').text(login.user1))
         };
 });
 
@@ -53,33 +71,23 @@ $("#upload-btn").click(function() {
         reader.onloadend = function(evt) {
             socket.emit("upload", evt.target.result);
             if(evt.target.result.includes("image")) {
-                $('#messages').append($('<p>').text(message), '<img src="' + evt.target.result + '"/>')
+                $('#messages').append($('<p>'), '<img src="' + evt.target.result + '"/>')
             }
             if(evt.target.result.includes("video")) {
-                $('#messages').append($('<p>').text(message), '<video src="' + evt.target.result + '"controls/>')
+                $('#messages').append($('<p>'), '<video src="' + evt.target.result + '"controls/>')
             };
         }
     });
 });
 
 socket.on("upload", function(message) {
-    var count = [];
     count.push(message)
-    var message1 = {};
-    message1 = JSON.parse(message)
-    if(message1.msg.includes("image")) {
-        if(count.length - 1 < 10) {
-            $('#messages').prepend($('<p>').text(message1.user + ": "), '<img src="' + message1.msg + '"/>', $('<p>'));
-        } else {
-            $('#messages').append($('<p>').text(message1.user + ": "), '<img src="' + message1.msg + '"/>', $('<p>'));
-        }
+    message2 = JSON.parse(message)
+    if(message2.msg3.includes("data:image/")) {
+            $('#messages').append($('<p>').text(message2.user3 + ": "), '<img src="' + message2.msg3 + '"/>', $('<p>'));
     }
-    if(message1.msg.includes("video")) {
-        if(count.length - 1 < 10) {
-            $('#messages').prepend($('<p>').text(message1.user + ": "), '<video src="' + message1.msg + '"controls/>');
-        } else {
-            $('#messages').append($('<p>').text(message1.user + ": "), '<video src="' + message1.msg + '"controls/>');
-        }
+    if(message2.msg3.includes("data:video/")) {
+            $('#messages').append($('<p>').text(message2.user3 + ": "), '<video src="' + message2.msg3 + '"controls/>');
     }
 });
 
@@ -96,11 +104,7 @@ $('#send-message-btn').click(function() {
 
 socket.on('chat', function (message) {
     count.push(message)
-    var message1 = {};
+    console.log(message)
     message1 = JSON.parse(message)
-    if(count.length - 1 < 10) {
-        $('#messages').prepend($('<p>').text(message1.user + ": " + message1.msg))
-    } else {
-        $('#messages').append($('<p>').text(message1.user + ": " + message1.msg));
-    }
+        $('#messages').append($('<p>').text(message1.user2 + ": " + message1.msg2))
 });

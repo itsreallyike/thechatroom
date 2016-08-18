@@ -13,8 +13,6 @@ var grid = require("gridfs-stream");
 var jade = require('jade');
 var path = require('path');
 var MONGOLAB_URI = "mongodb://heroku_9b0h1n2s:a25o5qr7f0al9tp4jcmqfr0cic@ds017553.mlab.com:17553/heroku_9b0h1n2s"
-var count1 = [];
-var count2 = [];
 
 app.set('port', process.env.PORT || 8080);
 app.set('views', path.join(__dirname, 'views'));
@@ -44,42 +42,48 @@ io.on("connection", function(socket) {
         var collection = db.collection("chatmessages");
             var stream = collection.find().sort({_id : -1}).limit(10).stream();
             stream.on("data", function(thecollection) {
-                socket.emit("login", thecollection.users);
-                socket.emit("chat", thecollection.messages);
-                socket.emit("upload", thecollection.videos);
-                socket.emit("upload", thecollection.images);
+                socket.emit("mongo", thecollection.users);
+                socket.emit("mongo", thecollection.messages);
+                socket.emit("mongo", thecollection.videos);
+                socket.emit("mongo", thecollection.images);
             });
     });
     
     socket.on("disconnect", function() {
         console.log("user disconnected");
     });
-    
+
     socket.on("login", function(username) {
+        var name = {
+            user1: username
+        }
+        var login = JSON.stringify(name)
         mongo.connect(MONGOLAB_URI, function(err, db) {
             if (err) {
                 console.log("error");
             }
             var collection = db.collection("chatmessages");
-                collection.insert({users: username}, function(err, doc) {
+                collection.insert({users: login}, function(err, doc) {
                     if (err) {
                         console.log("error insterting username to database")
                         return;
                     }
-                    console.log(username + " logged in - users")
+                    console.log(login + " logged in - users")
                 });
         });
-        socket.broadcast.emit("login", username)
+        socket.broadcast.emit("login", login)
     });
-    
+
+var count1 = [];    
     socket.on("chat", function(msg) {
         count1.push(msg)
         username = count1[0]
         var message1 = {
-                user: username,
-                msg: msg
+                user2: username,
+                msg2: msg
             };
         var message = JSON.stringify(message1);
+        console.log(message + "HEREISSTRING" + count1[0])
 
         mongo.connect(MONGOLAB_URI, function(err, db) {
             if (err) {
@@ -98,22 +102,22 @@ io.on("connection", function(socket) {
         });
         if(count1.length - 1 > 0)
             socket.broadcast.emit("chat", message);
-        
-        var message = ""
-        var message1 = {};
     });
 
+var count2 = [];
     socket.on("upload", function(up) {
         count2.push(up)
         username = count2[0]
         console.log("server obtained upload content")
         var data = up;
         var message1 = {
-            user: username,
-            msg: data
+            user3: username,
+            msg3: up
         };
         var message = JSON.stringify(message1)
         console.log(data.split(',')[0])
+
+        console.log(message + "THIS IS UPLOAD DATA AND COUNT --" + count2[0])
             
         mongo.connect(MONGOLAB_URI, function(err, db) {
             if (err) {
@@ -141,10 +145,6 @@ io.on("connection", function(socket) {
         });
         if(count2.length - 1 > 0)
             socket.broadcast.emit("upload", message);
-
-        var message = ""
-        var message1 = {};
-        var data = ""
     });
 });
 server.listen(app.get("port"), function () {
