@@ -35,7 +35,8 @@ $("#login-btn").click(function() {
 });
 socket.on("mongo", function(collection) {
     messages = JSON.parse(collection)
-
+    
+    if(messages !== null) {
     if(messages.user1) {
         if(messages.user1 !== null) {
         $('#messages').prepend($('<p>').text(messages.user1))
@@ -51,6 +52,7 @@ socket.on("mongo", function(collection) {
         if(messages.msg3.includes("data:video/")) {
             $('#messages').prepend($('<p>').text(messages.user3 + ": "), '<video src="' + messages.msg3 + '"controls/>');
             }; 
+    };
     };
 });
 socket.on("login", function (username) {
