@@ -1,6 +1,5 @@
 var socket = io();
 var users2 = [];
-var count = [];
 
 $("#upload-btn").css("visibility", "hidden")
 $('#message-box').on('keyup', function() {
@@ -43,17 +42,15 @@ socket.on("mongo", function(collection) {
     if(messages.user2) {
         $('#messages').prepend($('<p>').text(messages.user2 + ": " + messages.msg2)) 
         } 
-    if(messages.msg3.includes("data:image/")) {
-        if(messages.user3) {
+    if(messages.user3) {
+        if(messages.msg3.includes("data:image/")) {
             $('#messages').prepend($('<p>').text(messages.user3 + ": "), '<img src="' + messages.msg3 + '"/>', $('<p>'));
             } 
-    }
-    if(messages.msg3.includes("data:video/")) {
-        if(messages.user3) {
+        if(messages.msg3.includes("data:video/")) {
             $('#messages').prepend($('<p>').text(messages.user3 + ": "), '<video src="' + messages.msg3 + '"controls/>');
             } 
     }
-})
+});
 socket.on("login", function (username) {
     login = JSON.parse(username)
        if (login.user1 !== null) {
@@ -81,7 +78,6 @@ $("#upload-btn").click(function() {
 });
 
 socket.on("upload", function(message) {
-    count.push(message)
     message2 = JSON.parse(message)
     if(message2.msg3.includes("data:image/")) {
             $('#messages').append($('<p>').text(message2.user3 + ": "), '<img src="' + message2.msg3 + '"/>', $('<p>'));
@@ -103,8 +99,6 @@ $('#send-message-btn').click(function() {
     });
 
 socket.on('chat', function (message) {
-    count.push(message)
-    console.log(message)
     message1 = JSON.parse(message)
         $('#messages').append($('<p>').text(message1.user2 + ": " + message1.msg2))
 });
