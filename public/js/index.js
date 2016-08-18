@@ -36,20 +36,22 @@ $("#login-btn").click(function() {
 socket.on("mongo", function(collection) {
     messages = JSON.parse(collection)
 
-    if(messages.user1 && messages.user1 !== null) {
+    if(messages.user1) {
+        if(messages.user1 !== null) {
         $('#messages').prepend($('<p>').text(messages.user1))
-        }
+        };
+    };
     if(messages.user2) {
         $('#messages').prepend($('<p>').text(messages.user2 + ": " + messages.msg2)) 
-        } 
+        }; 
     if(messages.user3) {
         if(messages.msg3.includes("data:image/")) {
             $('#messages').prepend($('<p>').text(messages.user3 + ": "), '<img src="' + messages.msg3 + '"/>', $('<p>'));
-            } 
+            }; 
         if(messages.msg3.includes("data:video/")) {
             $('#messages').prepend($('<p>').text(messages.user3 + ": "), '<video src="' + messages.msg3 + '"controls/>');
-            } 
-    }
+            }; 
+    };
 });
 socket.on("login", function (username) {
     login = JSON.parse(username)
