@@ -47,6 +47,10 @@ io.on("connection", function(socket) {
                 socket.emit("mongo", thecollection.videos);
                 socket.emit("mongo", thecollection.images);
             });
+        setTimeout(function() {
+            db.collection("chatmessages").drop();
+            console.log("collection erased! (every 12 hours)")
+        }, 43200000);
     });
     
     socket.on("disconnect", function() {
